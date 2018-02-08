@@ -8,7 +8,7 @@ class jobs_spider(scrapy.Spider):
     # name use for "srapy crawl name"
     name = 'jobs'
     allowed_domains = ['www.zhipin.com']
-    start_urls = ['http://www.zhipin.com/', 'http://www.zhipin.com/']
+    start_urls = ['http://www.zhipin.com/']
 
     # query para
     positionUrl = 'http://www.zhipin.com/c101280600/h_101280600/?query=python'
