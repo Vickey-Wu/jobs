@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import time
+import random
 from jobs.items import JobsItem
 
 
@@ -13,7 +14,6 @@ class jobs_spider(scrapy.Spider):
     # query para
     positionUrl = 'http://www.zhipin.com/c101280600/h_101280600/?query=python'
     curPage = 1
-
 
     # disguised as a browser
     headers = {
@@ -38,28 +38,47 @@ class jobs_spider(scrapy.Spider):
         print("request -> " + response.url)
         job_list = response.css('div.job-list > ul > li')
         for job in job_list:
+            requirements, tags = '', ''
             item = JobsItem()
             job_primary = job.css('div.job-primary')
             # item['pid'] = job.css('div.info-primary > h3 > a::attr(data-jobid)').extract_first().strip()
-            item["job_title"] = job_primary.css('div.info-primary > h3 > a::text').extract_first().strip()
+            item["job_title"] = job_primary.css('div.info-primary > h3 > a > div::text').extract_first().strip()
             item["job_salary"] = job_primary.css('div.info-primary > h3 > a > span::text').extract_first().strip()
+
+            job_requirement = job_primary.css('div.info-primary > h3 > a > div > p::text').extract()
+            # requirement list to str
+            for tmp in job_requirement:
+                requirements += ''.join(tmp)
+            print(type(requirements))
+            item['job_requirement'] = requirements
+
             info_primary = job_primary.css('div.info-primary > p::text').extract()
             item['job_addr'] = info_primary[0].strip()
             item['job_exp'] = info_primary[1].strip()
             item['job_edu'] = info_primary[2].strip()
+
+            item['job_tags'] = job.css('div.tags span::text').extract_first().strip()
+            # job_tags = job.css('div.tags span::text').extract()
+            # for tmp in job_tags:
+            #     tags += ''.join(tmp)
+            # item['job_tags'] = tags
+
             item['company_name'] = job_primary.css(
                 'div.info-company > div.company-text > h3 > a::text').extract_first().strip()
             company_infos = job_primary.css('div.info-company > div.company-text > p::text').extract()
-            if len(company_infos) == 3:  # 有一条招聘这里只有两项，所以加个判断
-                item['company_type'] = company_infos[0].strip()
+            item['company_type'] = company_infos[0].strip()
+            # some company have no company listing info, so there are only company_type and company_employee_num
+            if len(company_infos) == 2:
                 # item['financeStage'] = company_infos[1].strip()
-                item['company_employee_num'] = company_infos[2].strip()
-                item['job_tags'] = job.css('li > div.job-tags > span::text').extract()
+                item['company_employee_num'] = company_infos[1].strip()
                 # item['time'] = job.css('span.time::text').extract_first().strip()
                 # item['updated_at'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            else:
+                item['company_employee_num'] = company_infos[2].strip()
             yield item
+
         self.curPage += 1
-        time.sleep(5)
+        time.sleep(random.randrange(2, 6))
 
         # send response
         yield self.next_request()

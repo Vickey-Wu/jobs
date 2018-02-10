@@ -16,6 +16,16 @@ BOT_NAME = 'jobs'
 SPIDER_MODULES = ['jobs.spiders']
 NEWSPIDER_MODULE = 'jobs.spiders'
 
+MYSQL_HOSTS = '127.0.0.1'
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = '123'
+MYSQL_DB = 'website'
+CHARSET = 'utf8'
+
+ITEM_PIPELINES = {
+    'jobs.pipelines.JobsPipeline': 300,
+}
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'jobs (+http://www.yourdomain.com)'
