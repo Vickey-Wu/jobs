@@ -57,11 +57,11 @@ class jobs_spider(scrapy.Spider):
             item['job_exp'] = info_primary[1].strip()
             item['job_edu'] = info_primary[2].strip()
 
-            item['job_tags'] = job.css('div.tags span::text').extract_first().strip()
-            # job_tags = job.css('div.tags span::text').extract()
-            # for tmp in job_tags:
-            #     tags += ''.join(tmp)
-            # item['job_tags'] = tags
+            # item['job_tags'] = job.css('div.tags span::text').extract_first().strip()
+            job_tags = job.css('div.tags span::text').extract()
+            for tmp in job_tags:
+                tags += ''.join(tmp)
+            item['job_tags'] = tags
 
             item['company_name'] = job_primary.css(
                 'div.info-company > div.company-text > h3 > a::text').extract_first().strip()
@@ -78,7 +78,7 @@ class jobs_spider(scrapy.Spider):
             yield item
 
         self.curPage += 1
-        time.sleep(random.randrange(2, 6))
+        time.sleep(random.randrange(4, 7))
 
         # send response
         yield self.next_request()

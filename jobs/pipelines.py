@@ -23,7 +23,7 @@ class JobsPipeline(object):
         db = settings['MYSQL_DB']
         c = settings['CHARSET']
 
-        jobs_sql = '''INSERT INTO website.jobs_jobsinfo (job_title, job_salary, job_requirement, job_addr, job_exp, job_edu, job_tags, company_name, company_employee_num, company_type) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'''
+        jobs_sql = '''INSERT INTO website.jobs_jobsinfo (job_title, job_salary, job_requirement, job_addr, job_exp, job_edu, job_tags, company_name, company_employee_num, company_type) VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9})'''
 
         # make sure the sequence is the same as sql format sequence
         jobs_list = [item['job_title'], item['job_salary'], item['job_requirement'], item['job_addr'], item['job_exp'],
