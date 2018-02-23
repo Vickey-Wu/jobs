@@ -46,7 +46,7 @@ def telnet_port(ip, port):
         tn = telnetlib.Telnet(ip, port, timeout=3)
         time.sleep(1)
         tn.close()
-        with open('ip_avaliable.csv', 'a') as f:
+        with open('ip_available.csv', 'a') as f:
             f.write(ip + ' ' + port + '\n')
     except:
         pass
@@ -55,17 +55,22 @@ def telnet_port(ip, port):
 
 if __name__ == '__main__':
     # IPspider(2)
-    proxy_l = get_proxy()
-    mutex = threading.RLock()
-    task_l = []
-    for i in range(len(proxy_l)):
-        task = threading.Thread(target=telnet_port, args=(proxy_l[i][0], proxy_l[i][1]))
-        task_l.append(task)
-    for t in task_l:
-        t.start()
-    for t1 in task_l:
-        t1.join()
-
+    # proxy_l = get_proxy()
+    # mutex = threading.RLock()
+    # task_l = []
+    # for i in range(len(proxy_l)):
+    #     task = threading.Thread(target=telnet_port, args=(proxy_l[i][0], proxy_l[i][1]))
+    #     task_l.append(task)
+    # for t in task_l:
+    #     t.start()
+    # for t1 in task_l:
+    #     t1.join()
+    ls = []
+    # ls.append((city, str(companyId), companyLabel, companyName,  companyShortName, companySize,
+    #                               education, financeStage, industryField, jobNature, leaderName, positionAdvantage,
+    #                               positionFirstType, positionId, positionName, positionType, pvScore, workYear,
+    #                               salaryMin, salaryMax, homeUrl, str(job_req)))
+    print(type(("s")))
 
 
 

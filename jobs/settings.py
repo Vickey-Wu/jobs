@@ -9,6 +9,10 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import random
+import time
+
+
 FEED_EXPORT_ENCODING = 'utf-8'
 
 BOT_NAME = 'jobs'
@@ -20,10 +24,25 @@ MYSQL_HOSTS = '127.0.0.1'
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = '123'
 MYSQL_DB = 'website'
+MYSQL_PORT = 3306
 CHARSET = 'utf8'
 
+# set delay avoid be baned
+delay = time.sleep(random.randrange(1, 2))
+DOWNLOAD_DELAY = delay
+
+# process item with pipelines.py
 ITEM_PIPELINES = {
     'jobs.pipelines.JobsPipeline': 300,
+}
+
+# set false avoid be baned
+COOKIES_ENABLED = False
+
+# use customize rotate user agent avoid be baned
+DOWNLOADER_MIDDLEWARES = {
+    'jobs.middlewares.JobsDownloaderMiddleware': None,
+    'jobs.spiders.rotate_useragent.RotateUserAgentMiddleware' :400
 }
 
 
@@ -39,13 +58,13 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+# DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+# COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -64,9 +83,11 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'jobs.middlewares.JobsDownloaderMiddleware': 543,
-#}
+# DOWNLOADER_MIDDLEWARES = {
+#    # 'jobs.middlewares.JobsDownloaderMiddleware': 100,
+#     'jobs.middlewares.ProxyMiddleware': 100,
+#
+# }
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

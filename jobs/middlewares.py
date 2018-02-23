@@ -101,3 +101,8 @@ class JobsDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+# self definition
+# class ProxyMiddleware(object):
+#     def process_request(self, request, spider):
+#         request.meta['proxy'] = "http://221.231.109.40:3128"
