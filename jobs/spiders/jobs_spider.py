@@ -10,10 +10,10 @@ class jobs_spider(scrapy.Spider):
     name = 'jobs'
     allowed_domains = ['www.zhipin.com']
     download_time = 2
-    start_urls = ['http://www.zhipin.com/']
+    start_urls = ['https://www.zhipin.com/']
 
     # query para
-    positionUrl = 'http://www.zhipin.com/c101280600/h_101280600/?query=python'
+    positionUrl = 'https://www.zhipin.com/c101280600/h_101280600/?query=python'
     curPage = 1
 
     # disguised as a browser

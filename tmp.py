@@ -4,6 +4,8 @@
 # @name: tmp
 # @author：vickey-wu
 
-ls = []
-ls.append(("s", "ss"))
-print(ls)
+import math
+
+for i in range(10000):
+    if i % 11 == 7 and i % 7 == 5 and i % 5 == 3 and i % 3 == 2:
+        print(i)

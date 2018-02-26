@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import requests
+from urllib import request
 from bs4 import BeautifulSoup
 import csv
 import telnetlib
@@ -16,8 +17,8 @@ def IPspider(numpage):
         user_agent = 'IP'
         headers = {'User-agent': user_agent}
         for num in range(1, numpage + 1):
-            ipurl = url + str(num)
-            response = requests.get(ipurl, headers=headers).text
+            ip_url = url + str(num)
+            response = requests.get(ip_url, headers=headers).text
             bs = BeautifulSoup(response, 'html.parser')
             res = bs.find_all('tr')
             for item in res:
@@ -41,36 +42,53 @@ def get_proxy():
     return proxy_l
 
 
-def telnet_port(ip, port):
-    try:
-        tn = telnetlib.Telnet(ip, port, timeout=3)
-        time.sleep(1)
-        tn.close()
-        with open('ip_available.csv', 'a') as f:
-            f.write(ip + ' ' + port + '\n')
-    except:
-        pass
-    time.sleep(1)
+def get_ip_and_port():
+    ip_port = []
+    # with open('ips.csv') as f:
+    with open('ip_available.csv') as f:
+        for i in f:
+            row = i.strip().split(':')
+            # row = i.strip().split(' ')
+            ip, port = row[0], row[1].strip()
+            ip_port.append([ip, port])
+    return ip_port
 
+def verification(ip, port):
+    # for n in range(len(ip_port)):
+        req = request.Request("https://www.baidu.com")
+        # req = request.Request("https://www.google.com")
+        req.set_proxy(host=ip + ":" + port, type="https")
+        try:
+
+            response = request.urlopen(req, timeout=10)
+        except Exception as e:
+            # print("request error", e, ip)
+            # continue
+            pass
+        else:
+            status = response.getcode()
+            if status >= 200 and status < 300:
+                print( ip + ": " + port)
+            else:
+                # print("invalid proxy:", status)
+                pass
+        time.sleep(1)
+        # thread_max.release()
+
+
+# verification()
 
 if __name__ == '__main__':
-    # IPspider(2)
-    # proxy_l = get_proxy()
-    # mutex = threading.RLock()
-    # task_l = []
-    # for i in range(len(proxy_l)):
-    #     task = threading.Thread(target=telnet_port, args=(proxy_l[i][0], proxy_l[i][1]))
-    #     task_l.append(task)
-    # for t in task_l:
-    #     t.start()
-    # for t1 in task_l:
-    #     t1.join()
-    ls = []
-    # ls.append((city, str(companyId), companyLabel, companyName,  companyShortName, companySize,
-    #                               education, financeStage, industryField, jobNature, leaderName, positionAdvantage,
-    #                               positionFirstType, positionId, positionName, positionType, pvScore, workYear,
-    #                               salaryMin, salaryMax, homeUrl, str(job_req)))
-    print(type(("s")))
-
-
-
+    # IPspider(10)
+    # thread_max = threading.BoundedSemaphore(100)
+    ip_port = get_ip_and_port()
+    mutex = threading.RLock()
+    task_l = []
+    for i in range(6):
+        # thread_max.acquire()
+        task = threading.Thread(target=verification, args=(ip_port[i][0], ip_port[i][1]))
+        task_l.append(task)
+    for t in task_l:
+        t.start()
+    for t1 in task_l:
+        t1.join()

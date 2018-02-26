@@ -8,18 +8,8 @@ from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 import random
 
 class RotateUserAgentMiddleware(UserAgentMiddleware):
-
-    def __init__(self, user_agent=''):
-        self.user_agent = user_agent
-
-    def process_request(self, request, spider):
-        ua = random.choice(self.user_agent_list)
-        if ua:
-            print("********Current UserAgent:%s************" % ua)
-            request.headers.setdefault('User-Agent', ua)
-
-    #the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
-    #for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
+    # the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
+    # for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
     user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
         "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
@@ -57,4 +47,30 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
         "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 "
         "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
-       ]
+    ]
+
+    def __init__(self, user_agent=''):
+        self.user_agent = user_agent
+
+    def get_ip_and_port(self):
+        ip_port = []
+        with open('ips.csv') as f:
+            for i in f:
+                row = i.strip().split(',')
+                ip, port = row[0], row[1]
+                ip_port.append([ip, port])
+        return ip_port
+
+    def process_request(self, request, spider):
+        # rotate poxy ip
+        ip_port = self.get_ip_and_port()
+        ip_port_n = random.choice(ip_port)
+        if ip_port_n:
+            request.meta['proxy'] = "https://%s:%d" % ("219.149.46.151", 3129)
+            # request.meta['proxy'] = "https://%s:%d" % (ip_port_n[0], int(ip_port_n[1]))
+
+        # rotate user-agent
+        ua = random.choice(self.user_agent_list)
+        if ua:
+            print("********Current UserAgent:%s************" % ua)
+            request.headers.setdefault('User-Agent', ua)

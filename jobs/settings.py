@@ -42,7 +42,9 @@ COOKIES_ENABLED = False
 # use customize rotate user agent avoid be baned
 DOWNLOADER_MIDDLEWARES = {
     'jobs.middlewares.JobsDownloaderMiddleware': None,
-    'jobs.spiders.rotate_useragent.RotateUserAgentMiddleware' :400
+    # 'jobs.spiders.rotate_useragent.RotateUserAgentMiddleware' :400,
+    'jobs.middlewares.RotateUserAgentMiddlware': 543,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
 }
 
 
