@@ -28,8 +28,8 @@ MYSQL_PORT = 3306
 CHARSET = 'utf8'
 
 # set delay avoid be baned
-delay = time.sleep(random.randrange(1, 2))
-DOWNLOAD_DELAY = delay
+# delay = time.sleep(random.randrange(1, 2))
+DOWNLOAD_DELAY = 5
 
 # process item with pipelines.py
 ITEM_PIPELINES = {
@@ -42,9 +42,11 @@ COOKIES_ENABLED = False
 # use customize rotate user agent avoid be baned
 DOWNLOADER_MIDDLEWARES = {
     'jobs.middlewares.JobsDownloaderMiddleware': None,
-    # 'jobs.spiders.rotate_useragent.RotateUserAgentMiddleware' :400,
-    'jobs.middlewares.RotateUserAgentMiddlware': 543,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'jobs.spiders.rotate_useragent.RotateUserAgentMiddleware' :400,
+    # 'jobs.middlewares.RotateUserAgentMiddlware': 543,
+    # 'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
+
 }
 
 
@@ -60,10 +62,10 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
-#CONCURRENT_REQUESTS_PER_IP = 16
+# CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
@@ -107,7 +109,7 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-#AUTOTHROTTLE_START_DELAY = 5
+AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
 #AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to

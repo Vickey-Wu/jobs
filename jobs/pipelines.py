@@ -60,35 +60,3 @@ class JobsPipeline(object):
             # cur.close()
             con.close()
             return item
-
-# 
-# def connect_mysql(sql, oper_type="select", data_l=None):
-#     conn = pymysql.connect(host='localhost', user="root", password="123",
-#                            database="website", port=3306)
-#     cur = conn.cursor()
-#     if oper_type == "insert":
-#         cur.executemany(sql, data_l)
-#         conn.commit()
-#     else:
-#         cur.execute(sql)
-#     result = cur.fetchall()
-#     conn.close()
-#     return result
-# 
-# 
-# def create_list(file_name):
-#     ls = []
-#     if not re.findall(file_name, r".txt"):
-#         file_name += ".txt"
-#     with open(file_name) as f:
-#         for i in f:
-#             job_title, job_salary, job_requirement, job_addr, job_exp, job_edu, job_tags, company_name, company_employee_num, company_type = i.strip().split(
-#                 ",")
-#             ls.append([job_title, job_salary, job_requirement, job_addr, job_exp, job_edu, job_tags, company_name, company_employee_num, company_type])
-#     return ls
-# 
-# 
-# def data_insert():
-#     sql = '''INSERT INTO website.jobs_jobsinfo (job_title, job_salary, job_requirement, job_addr, job_exp, job_edu, job_tags, company_name, company_employee_num, company_type) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'''
-#     data_l = create_list("jobs_data")
-#     connect_mysql(sql, oper_type="insert", data_l=data_l)

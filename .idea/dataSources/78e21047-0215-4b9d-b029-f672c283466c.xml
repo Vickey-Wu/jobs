@@ -446,7 +446,7 @@ model</ColNames>
     </column>
     <column id="105" parent="20" name="job_title">
       <Position>2</Position>
-      <DataType>varchar(60)|0</DataType>
+      <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="106" parent="20" name="job_salary">
@@ -456,7 +456,7 @@ model</ColNames>
     </column>
     <column id="107" parent="20" name="job_requirement">
       <Position>4</Position>
-      <DataType>longtext|0</DataType>
+      <DataType>varchar(2000)|0</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="108" parent="20" name="job_addr">

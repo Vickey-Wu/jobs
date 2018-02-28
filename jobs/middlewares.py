@@ -72,7 +72,14 @@ class JobsDownloaderMiddleware(object):
     def process_request(self, request, spider):
         # Called for each request that goes through the downloader
         # middleware.
-
+        # proxy_d = {
+        #     "113.108.204.74": "8888",
+        #     "118.114.77.47": "8080",
+        #     "111.155.116.224": "8123",
+        # }
+        # for k, v in proxy_d:
+        #     proxy = request.meta['proxy'] = "http://" + k + ":" + v
+        #     yield proxy
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object

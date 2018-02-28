@@ -56,18 +56,22 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         ip_port = []
         with open('ips.csv') as f:
             for i in f:
-                row = i.strip().split(',')
-                ip, port = row[0], row[1]
-                ip_port.append([ip, port])
+                # row = i.strip().split(': ')
+                # ip, port = row[0], row[1]
+                # ip_port.append([ip, port])
+                ip_port.append(i.strip())
         return ip_port
 
     def process_request(self, request, spider):
         # rotate poxy ip
-        ip_port = self.get_ip_and_port()
-        ip_port_n = random.choice(ip_port)
-        if ip_port_n:
-            request.meta['proxy'] = "https://%s:%d" % ("219.149.46.151", 3129)
-            # request.meta['proxy'] = "https://%s:%d" % (ip_port_n[0], int(ip_port_n[1]))
+        # ip_port = self.get_ip_and_port()
+        # ip_port_n = random.choice(ip_port)
+        # ip = ip_port_n.split(": ")[0]
+        # port = ip_port_n.split(": ")[1]
+        # print(type(ip_port_n), ip_port_n)
+        # # print(type(ip_port), ip_port)
+        # if ip_port_n:
+        #     request.meta['proxy'] = "https://%s:%d" % (ip, int(port))
 
         # rotate user-agent
         ua = random.choice(self.user_agent_list)

@@ -44,8 +44,8 @@ def get_proxy():
 
 def get_ip_and_port():
     ip_port = []
-    # with open('ips.csv') as f:
-    with open('ip_available.csv') as f:
+    with open('ips.csv') as f:
+    # with open('ip_available.csv') as f:
         for i in f:
             row = i.strip().split(':')
             # row = i.strip().split(' ')
