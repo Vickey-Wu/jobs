@@ -2,6 +2,8 @@
 import scrapy
 import time
 import random
+from urllib import request
+from bs4 import BeautifulSoup
 from jobs.items import JobsItem
 
 
@@ -46,12 +48,26 @@ class jobs_spider(scrapy.Spider):
             item["job_title"] = job_primary.css('div.info-primary > h3 > a > div::text').extract_first().strip()
             item["job_salary"] = job_primary.css('div.info-primary > h3 > a > span::text').extract_first().strip()
 
-            job_req = job_primary.css('div.info-primary > h3 > a > div > p::text').extract()
-            # requirement list to str
-            for tmp in job_req:
-                requirements += ''.join(tmp)
-            # print(type(requirements), "req")
-            item['job_requirement'] = requirements
+            # redirect requirement url
+            detail_tmp = job_primary.css('div.info-primary > h3 > a[href]')
+            detail_url = "https://www.zhipin.com" + str(detail_tmp).split("href=\"")[-1].split("\"")[0]
+            resp = request.urlopen(detail_url).read().decode("utf-8")
+            soup = BeautifulSoup(resp, 'lxml')
+            requirements = soup.find_all(class_="text")[0]
+            item['job_requirement'] = str(requirements)
+            print(requirements)
+            time.sleep(3)
+            # end redirect
+
+            # job_req = job_primary.css('div.info-primary > h3 > a > div > p::text').extract()
+            # print("job_req", job_req)
+            # time.sleep(3)
+            # # requirement list to str
+            # for tmp in job_req:
+            #     requirements += ''.join(tmp)
+            # time.sleep(3)
+            # print("requirements", requirements)
+            # item['job_requirement'] = requirements
 
             info_primary = job_primary.css('div.info-primary > p::text').extract()
             item['job_addr'] = info_primary[0].strip()
